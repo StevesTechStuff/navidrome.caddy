@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "caddy_data:/data"
+      - "caddy_config:/config"
+      - "./Caddyfile:/etc/caddy/Caddyfile"
+    networks:
+      - default
+
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    ports:
+      - "4533:4533"
+    volumes:
+      - "navidrome_data:/data"
+      - "${MUSIC_LIBRARY_PATH}:/music:ro"
+    environment:
+      ND_MUSICFOLDER: /music
+      ND_SCANINTERVAL: 1m
+      ND_SESSIONTIMEOUT: 24h
+      ND_LOGLEVEL: info
+    networks:
+      - default
+
+volumes:
+  navidrome_data:
+  caddy_data:
+  caddy_config:

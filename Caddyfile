@@ -1,0 +1,3 @@
+FQDN {
+    reverse_proxy navidrome:4533
+}
